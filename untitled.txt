@@ -1,0 +1,124 @@
+<roseday.html>
+<Roseday.html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌹 Rose Day Special 💖</title>
+
+<style>
+body{
+  margin:0;
+  font-family: Arial, sans-serif;
+  text-align:center;
+  background: linear-gradient(to right,#ff9a9e,#fad0c4);
+  color:#fff;
+  overflow-x:hidden;
+}
+
+h1{
+  margin-top:20px;
+  font-size:28px;
+}
+
+input,button{
+  padding:10px;
+  margin:8px;
+  border:none;
+  border-radius:6px;
+  font-size:16px;
+}
+
+button{
+  background:#ff3366;
+  color:white;
+  cursor:pointer;
+}
+
+.garden{
+  display:none;
+  margin-top:20px;
+}
+
+.rose{
+  font-size:60px;
+  animation: float 3s infinite ease-in-out;
+}
+
+@keyframes float{
+  0%{transform:translateY(0px);}
+  50%{transform:translateY(-15px);}
+  100%{transform:translateY(0px);}
+}
+
+.share{
+  margin-top:15px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>🌹 Create Your Rose Day Surprise 💕</h1>
+
+<div id="form">
+  <input type="text" id="yourName" placeholder="Your Name"><br>
+  <input type="text" id="theirName" placeholder="Their Name"><br>
+  <input type="text" id="message" placeholder="Write a Sweet Message"><br>
+  <button onclick="createPage()">Create Surprise 🌹</button>
+</div>
+
+<div class="garden" id="garden">
+  <h2>🌹 Your Special Rose 💖</h2>
+  <div class="rose">🌹</div>
+  <p id="resultText"></p>
+  <div class="share">
+    <button onclick="shareWhatsApp()">Share on WhatsApp</button>
+  </div>
+</div>
+
+<audio id="bgMusic" loop>
+  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+
+function createPage(){
+  const you = document.getElementById("yourName").value;
+  const them = document.getElementById("theirName").value;
+  const msg = document.getElementById("message").value;
+
+  if(!you || !them){
+    alert("Please enter both names!");
+    return;
+  }
+
+  const url = window.location.origin + window.location.pathname +
+  `?you=${encodeURIComponent(you)}&them=${encodeURIComponent(them)}&msg=${encodeURIComponent(msg)}`;
+
+  window.location.href = url;
+}
+
+function loadFromURL(){
+  const params = new URLSearchParams(window.location.search);
+  const you = params.get("you");
+  const them = params.get("them");
+  const msg = params.get("msg");
+
+  if(you && them){
+    document.getElementById("form").style.display="none";
+    document.getElementById("garden").style.display="block";
+    document.getElementById("resultText").innerHTML =
+      `Dear <b>${them}</b>,<br>${msg}<br><br>From <b>${you}</b> 💕`;
+
+    document.getElementById("bgMusic").play();
+  }
+}
+
+function shareWhatsApp(){
+  const text = window.location.href;
+  window.open(`https://wa.me/?text=${encodeURIComponent(text)}`);
+}
+
+loadFromURL();
+
+</script>
